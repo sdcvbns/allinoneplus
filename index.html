@@ -30,20 +30,25 @@
   .container { max-width: 700px; margin: -60px auto 20px; background: var(--card-bg); backdrop-filter: blur(10px); border-radius: var(--radius); padding: 2rem; box-shadow: 0 20px 40px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.5); }
   label { display: block; font-weight: 600; margin-bottom: 8px; color: #4a5568; font-size: 0.95rem; }
   select, input { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1rem; margin-bottom: 20px; transition: all 0.3s ease; background: white; box-sizing: border-box; }
-  
-  /* التعديل الجديد لصندوق القائمة */
+
+  /* الحل المطلوب: تحويل قائمة النتائج إلى صندوق تمرير (List Box) */
   #productsList { 
-    max-height: 400px; 
-    overflow-y: auto; 
-    padding-right: 5px;
-    border-radius: 10px;
+    max-height: 350px; 
+    overflow-y: scroll; /* تمرير دائم عند الحاجة */
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 15px;
+    padding: 10px;
+    display: block;
   }
-  /* تحسين شكل مسطرة التمرير */
-  #productsList::-webkit-scrollbar { width: 6px; }
+  
+  /* تحسين مظهر شريط التمرير */
+  #productsList::-webkit-scrollbar { width: 8px; }
   #productsList::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 10px; }
 
-  .item { background: white; padding: 15px 20px; border-radius: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #edf2f7; transition: transform 0.2s, box-shadow 0.2s; }
-  .item:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.06); border-color: #0062ff; }
+  .item { background: white; padding: 15px 20px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #edf2f7; transition: 0.2s; }
+  .item:last-child { margin-bottom: 0; }
+  .item:hover { border-color: #0062ff; }
   .item .name { font-weight: 700; color: #2d3748; }
   .item .compatibility { background: #ebf4ff; color: #0062ff; padding: 6px 14px; border-radius: 10px; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(0,98,255,0.1); }
   footer { text-align: center; padding: 2rem; color: #718096; font-size: 0.9rem; }
