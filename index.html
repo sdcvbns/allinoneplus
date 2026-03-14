@@ -22,7 +22,11 @@
     --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  /* منع تحديد النصوص في كامل الصفحة */
+  * { 
+    margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; 
+    user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;
+  }
 
   body {
     font-family: 'IBM Plex Sans Arabic', sans-serif;
@@ -126,6 +130,7 @@
     border-radius: 15px; font-size: 1rem; margin-bottom: 20px; 
     box-sizing: border-box; outline: none; transition: 0.3s;
     box-shadow: var(--shadow-premium); font-weight: 500;
+    user-select: text !important; -webkit-user-select: text !important; /* السماح بالكتابة داخل البحث */
   }
   #searchInput:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0, 82, 212, 0.1); }
 
@@ -165,9 +170,7 @@
   ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 </style>
 </head>
-<body>
-
-<button class="lang-switcher" id="langBtn" onclick="toggleLang()">EN</button>
+<body oncontextmenu="return false;"> <button class="lang-switcher" id="langBtn" onclick="toggleLang()">EN</button>
 
 <header>
   <h1 id="appTitle">الآغا برو</h1>
@@ -199,6 +202,14 @@
 <footer><span id="footerText">جميع الحقوق محفوظة © الآغا برو 2026</span></footer>
 
 <script>
+  // منع الاختصارات (نسخ، قص، عرض كود المصدر)
+  document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'u' || e.key === 'a' || e.key === 's')) {
+      e.preventDefault();
+      return false;
+    }
+  });
+
   const apiUrl = "https://script.google.com/macros/s/AKfycbzG8ppzM1qIVFSjUp7FfRMYL9vQbH1cIgHUceaIDQgK1yh7Pir_rbFHYREJ8Qgl3ONDvA/exec";
   let allData = [];
   let selectedBrand = ""; 
