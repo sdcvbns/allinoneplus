@@ -2,177 +2,317 @@
 <html lang="ar" dir="rtl" id="htmlTag">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 <title>الآغا برو - التوافق الذكي</title>
-<link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;600;700&family=IBM+Plex+Sans+Arabic:wght@300;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <style>
   :root {
-    --main-gradient: linear-gradient(135deg, #0062ff 0%, #00d2ff 100%);
-    --bg-color: #f0f4f8;
-    --card-bg: rgba(255, 255, 255, 0.9);
-    --text-main: #1a202c;
-    --accent-glow: rgba(0, 98, 255, 0.2);
-    --radius: 20px;
+    --primary: #0052d4;
+    --secondary: #4364f7;
+    --accent: #6fb1fc;
+    --vibrant-gradient: linear-gradient(135deg, #0052d4 0%, #4364f7 50%, #6fb1fc 100%);
+    --bg-color: #f8fafc;
+    --card-white: #ffffff;
+    --text-dark: #0f172a;
+    --text-light: #475569;
+    --radius-lg: 20px;
+    --radius-md: 15px;
+    --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
-  body {
-    font-family: 'IBM Plex Sans Arabic', 'Changa', sans-serif;
-    background: var(--bg-color);
-    background-image: radial-gradient(at 0% 0%, rgba(0, 210, 255, 0.15) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(0, 98, 255, 0.15) 0px, transparent 50%);
-    margin: 0; min-height: 100vh; color: var(--text-main); display: flex; flex-direction: column; user-select: none;
-  }
-  #langOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--main-gradient); z-index: 2000; display: none; flex-direction: column; justify-content: center; align-items: center; color: white; }
-  .lang-init-btn { background: white; color: #0062ff; border: none; padding: 15px 40px; border-radius: 12px; margin: 10px; font-weight: 700; cursor: pointer; font-size: 1.2rem; width: 220px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-  .lang-switcher { position: absolute; top: 20px; right: 20px; background: rgba(255, 255, 255, 0.25); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 6px 15px; border-radius: 10px; cursor: pointer; font-weight: 700; z-index: 100; backdrop-filter: blur(10px); transition: 0.3s; }
-  header { background: var(--main-gradient); padding: 4rem 1rem; text-align: center; color: white; border-radius: 0 0 50px 50px; box-shadow: 0 10px 30px var(--accent-glow); position: relative; overflow: hidden; }
-  header h1 { font-size: 2.8rem; margin: 0; font-weight: 700; text-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-  header p { opacity: 0.9; font-size: 1.1rem; margin-top: 10px; }
-  main { flex: 1; padding: 2rem 1rem; }
-  .container { max-width: 700px; margin: -60px auto 20px; background: var(--card-bg); backdrop-filter: blur(10px); border-radius: var(--radius); padding: 2rem; box-shadow: 0 20px 40px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.5); }
-  label { display: block; font-weight: 600; margin-bottom: 8px; color: #4a5568; font-size: 0.95rem; }
-  select, input { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1rem; margin-bottom: 20px; transition: all 0.3s ease; background: white; box-sizing: border-box; }
 
-  /* الحل المطلوب: تحويل قائمة النتائج إلى صندوق تمرير (List Box) */
-  #productsList { 
-    max-height: 350px; 
-    overflow-y: scroll; /* تمرير دائم عند الحاجة */
-    background: #f8fafc;
-    border: 2px solid #e2e8f0;
-    border-radius: 15px;
-    padding: 10px;
-    display: block;
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+    background-color: var(--bg-color);
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 82, 212, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(111, 177, 252, 0.05) 0%, transparent 40%);
+    min-height: 100vh;
+    color: var(--text-dark);
+  }
+
+  /* هيدر قوي الألوان */
+  header { 
+    background: var(--vibrant-gradient);
+    padding: 3.5rem 1rem 5rem; 
+    text-align: center; 
+    color: white; 
+    border-radius: 0 0 40px 40px; 
+    box-shadow: 0 10px 30px rgba(0, 82, 212, 0.3);
+    position: relative;
+    z-index: 1;
+  }
+
+  header h1 { 
+    font-size: 2.6rem; font-family: 'Changa', sans-serif; 
+    margin: 0; text-shadow: 2px 4px 6px rgba(0,0,0,0.15);
+  }
+
+  header p { opacity: 0.95; font-weight: 400; font-size: 1.1rem; margin-top: 5px; letter-spacing: 0.5px; }
+
+  .lang-switcher {
+    position: absolute; top: 20px; right: 20px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    color: white; border: 1.5px solid rgba(255,255,255,0.4);
+    padding: 7px 16px; border-radius: 12px; cursor: pointer;
+    font-weight: 700; font-size: 0.9rem; transition: 0.3s;
+  }
+  .lang-switcher:hover { background: white; color: var(--primary); }
+
+  .container { max-width: 600px; margin: -35px auto 40px; padding: 0 20px; position: relative; z-index: 10; }
+
+  /* انيميشن الدخول الواضح */
+  .step-view { display: none; }
+  .step-view.active { 
+    display: block; 
+    animation: entrance 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; 
+  }
+
+  @keyframes entrance {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .step-title { 
+    text-align: center; margin-bottom: 20px; color: var(--text-dark); 
+    font-weight: 700; font-size: 1.25rem; 
+    background: var(--card-white); padding: 15px; border-radius: var(--radius-md);
+    box-shadow: var(--shadow-premium);
+    border-bottom: 3px solid var(--primary);
+  }
+
+  /* شبكة العناصر */
+  .grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+  
+  .grid-item { 
+    background: var(--card-white); 
+    border-radius: var(--radius-lg); 
+    padding: 22px 10px; 
+    text-align: center; cursor: pointer; 
+    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+    display: flex; flex-direction: column; align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   }
   
-  /* تحسين مظهر شريط التمرير */
-  #productsList::-webkit-scrollbar { width: 8px; }
-  #productsList::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 10px; }
+  .grid-item:hover { 
+    transform: translateY(-8px); 
+    border-color: var(--primary);
+    box-shadow: 0 15px 30px rgba(0, 82, 212, 0.15);
+  }
+  
+  .grid-item img { 
+    width: 60px; height: 60px; object-fit: contain; margin-bottom: 12px; 
+    transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  .grid-item:hover img { transform: scale(1.15); }
+  .grid-item span { font-size: 1.05rem; font-weight: 700; color: var(--text-dark); }
 
-  .item { background: white; padding: 15px 20px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #edf2f7; transition: 0.2s; }
-  .item:last-child { margin-bottom: 0; }
-  .item:hover { border-color: #0062ff; }
-  .item .name { font-weight: 700; color: #2d3748; }
-  .item .compatibility { background: #ebf4ff; color: #0062ff; padding: 6px 14px; border-radius: 10px; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(0,98,255,0.1); }
-  footer { text-align: center; padding: 2rem; color: #718096; font-size: 0.9rem; }
+  /* الأزرار والبحث */
+  .back-btn {
+    background: var(--card-white); border: 2px solid #e2e8f0; padding: 10px 18px; 
+    border-radius: 12px; cursor: pointer; font-weight: 700; margin-bottom: 15px; 
+    display: inline-flex; align-items: center; gap: 8px; color: var(--text-light);
+    transition: 0.3s;
+  }
+  .back-btn:hover { border-color: var(--primary); color: var(--primary); transform: translateX(5px); }
+
+  #searchInput {
+    width: 100%; padding: 18px 25px; border: 2px solid #e2e8f0; 
+    border-radius: 15px; font-size: 1rem; margin-bottom: 20px; 
+    box-sizing: border-box; outline: none; transition: 0.3s;
+    box-shadow: var(--shadow-premium); font-weight: 500;
+  }
+  #searchInput:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0, 82, 212, 0.1); }
+
+  /* قائمة النتائج بجودة عالية */
+  #productsList { 
+    background: var(--card-white); border-radius: var(--radius-lg); 
+    max-height: 480px; overflow-y: auto;
+    box-shadow: var(--shadow-premium);
+    border: 1px solid #e2e8f0;
+  }
+  
+  .item { 
+    padding: 18px 20px; border-bottom: 1px solid #f1f5f9; 
+    display: flex; justify-content: space-between; align-items: center;
+    transition: 0.2s;
+  }
+  .item:last-child { border-bottom: none; }
+  .item:hover { background: #f8fafc; transform: scale(1.01); }
+  
+  .item.matched { 
+    background: #eff6ff; 
+    border-right: 5px solid var(--primary); 
+  }
+  
+  .item .name { font-weight: 700; color: var(--text-dark); }
+  .item .compatibility { 
+    background: var(--primary); color: white; 
+    padding: 6px 14px; border-radius: 10px; 
+    font-size: 0.9rem; font-weight: 700; 
+    box-shadow: 0 4px 8px rgba(0, 82, 212, 0.2);
+  }
+
+  footer { text-align: center; padding: 2.5rem 1rem; color: var(--text-light); font-weight: 600; font-size: 0.9rem; }
+
+  /* شريط التمرير الملون */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 </style>
 </head>
 <body>
 
-<div id="langOverlay">
-  <h2 style="margin-bottom:20px;">اختر اللغة / Select Language</h2>
-  <button class="lang-init-btn" onclick="setLanguage('ar')">العربية</button>
-  <button class="lang-init-btn" onclick="setLanguage('en')">English</button>
-</div>
-
-<button class="lang-switcher" id="langToggle" onclick="toggleLang()">EN</button>
+<button class="lang-switcher" id="langBtn" onclick="toggleLang()">EN</button>
 
 <header>
-  <h1 id="txt-title">الآغا برو</h1>
-  <p id="txt-subtitle">دليل الآغا للتوافقات الذكي</p>
+  <h1 id="appTitle">الآغا برو</h1>
+  <p id="appSubtitle">دليل التوافقات الذكي</p>
 </header>
 
-<main>
-  <div class="container" id="customerPage">
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-      <div>
-        <label id="lbl-brand">الشركة</label>
-        <select id="brandSelect" onchange="onBrandOrTypeChange()">
-          <option value="" disabled selected id="opt-brand-default">اختر</option>
-        </select>
-      </div>
-      <div>
-        <label id="lbl-type">القسم</label>
-        <select id="typeSelect" onchange="onBrandOrTypeChange()" disabled>
-          <option value="" disabled selected id="opt-type-default">اختر</option>
-        </select>
-      </div>
+<main class="container">
+  <div id="step-brands" class="step-view active">
+    <div class="step-title" id="titleStep1"><i class="fa-solid fa-mobile-screen-button"></i> اختر الشركة المصنعة</div>
+    <div class="grid-menu" id="brandsGrid"></div>
+  </div>
+
+  <div id="step-types" class="step-view">
+    <button class="back-btn" onclick="showStep('brands')"><i class="fa-solid fa-chevron-right"></i> <span id="backText1">عودة</span></button>
+    <div class="step-title" id="selectedBrandTitle"></div>
+    <div class="grid-menu" id="typesGrid"></div>
+  </div>
+
+  <div id="step-results" class="step-view">
+    <button class="back-btn" onclick="showStep('types')"><i class="fa-solid fa-chevron-right"></i> <span id="backText2">عودة</span></button>
+    <div style="position:relative; overflow: visible;">
+        <input type="text" id="searchInput" oninput="renderList()">
+        <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:20px; top:20px; color:var(--primary); font-size: 1.2rem;"></i>
     </div>
-    <input type="text" id="searchInput" placeholder="🔍 ابحث عن موديل الجهاز..." oninput="renderList()" style="display:none;">
     <div id="productsList"></div>
   </div>
 </main>
 
-<footer><span id="txt-footer">جميع الحقوق محفوظة © الآغا برو 2026</span></footer>
+<footer><span id="footerText">جميع الحقوق محفوظة © الآغا برو 2026</span></footer>
 
 <script>
   const apiUrl = "https://script.google.com/macros/s/AKfycbzG8ppzM1qIVFSjUp7FfRMYL9vQbH1cIgHUceaIDQgK1yh7Pir_rbFHYREJ8Qgl3ONDvA/exec";
   let allData = [];
+  let selectedBrand = ""; 
+  let selectedType = "";
   let currentLang = 'ar';
-  const DB_BRANDS = ["ايفون", "سامسونج", "شاومي","بوكو","هواوي", "هونر", "اوبو", "فيفو", "انفنكس", "تكنو", "ريلمي", "آيتل"];
-  const DB_TYPES = ["شاشات", "بطاريات","گفرات","فلاتات شحن", "ايسيات", "لواصق", "شرائط"];
 
-  const translations = {
-    ar: { title: "الآغا برو", subtitle: "دليل الآغا للتوافقات الذكي", brand: "الشركة", type: "القسم", search: "🔍 ابحث عن موديل الجهاز...", select: "اختر", footer: "جميع الحقوق محفوظة © الآغا برو 2026", toggle: "EN", brands: DB_BRANDS, types: DB_TYPES },
-    en: { title: "Al-Agha Pro", subtitle: "Smart Compatibility Guide", brand: "Brand", type: "Category", search: "🔍 Search device model...", select: "Select", footer: "All Rights Reserved © Al-Agha Pro 2026", toggle: "AR", brands: ["iPhone", "Samsung", "Xiaomi","Poco","Huawei", "Honor", "Oppo", "Vivo", "Infinix", "Techno", "Realme", "Itel"], types: ["Screens", "Batteries","Covers" ,"Charging Flex", "ICs", "Stickers", "Flex Cables"] }
+  const DB_BRANDS = [
+    { ar: "ايفون", en: "iPhone", img: "https://h.top4top.io/p_36990v39l0.jpg" },
+    { ar: "سامسونج", en: "Samsung", img: "https://b.top4top.io/p_3699ftzh80.jpeg" },
+    { ar: "شاومي", en: "Xiaomi", img: "https://e.top4top.io/p_3699zoev12.png" },
+    { ar: "هواوي", en: "Huawei", img: "https://b.top4top.io/p_3699f74m40.png" },
+    { ar: "هونر", en: "Honor", img: "https://h.top4top.io/p_3699rooyv8.jpeg" },
+    { ar: "اوبو", en: "Oppo", img: "https://b.top4top.io/p_3699vi4kc1.jpg" },
+    { ar: "فيفو", en: "Vivo", img: "https://g.top4top.io/p_3699nr78i0.png" },
+    { ar: "انفنكس", en: "Infinix", img: "https://l.top4top.io/p_3699pwmr33.jpg" },
+    { ar: "تكنو", en: "Tecno", img: "https://a.top4top.io/p_3699ns6wj0.png" },
+    { ar: "ريلمي", en: "Realme", img: "https://e.top4top.io/p_36999axcs0.png" },
+    { ar: "آيتل", en: "Itel", img: "https://h.top4top.io/p_3699dh6mj0.png" }
+  ];
+
+  const DB_TYPES = {
+    ar: ["شاشات", "بطاريات", "گفرات", "فلاتات شحن", "ايسيات", "لواصق", "شرائط"],
+    en: ["Screens", "Batteries", "Covers", "Charging Flex", "ICs", "Stickers", "Flex Cables"]
   };
 
-  window.onload = function() {
-    const savedLang = localStorage.getItem('appLang');
-    if (savedLang) { setLanguage(savedLang); } else { document.getElementById('langOverlay').style.display = 'flex'; }
+  const UI_TEXT = {
+    ar: { title: "الآغا برو", sub: "دليل التوافقات الذكي", step1: "اختر الشركة المصنعة", back: "عودة", search: "ابحث عن موديل أو توافق...", footer: "جميع الحقوق محفوظة © الآغا برو 2026", noResult: "لا توجد نتائج مطابقة.." },
+    en: { title: "Al-Agha Pro", sub: "Smart Compatibility Guide", step1: "Select Brand", back: "Back", search: "Search model or compatibility...", footer: "All Rights Reserved © Al-Agha Pro 2026", noResult: "No results found.." }
   };
 
-  function setLanguage(lang) {
-    currentLang = lang;
-    localStorage.setItem('appLang', lang);
-    document.getElementById('langOverlay').style.display = 'none';
-    const isEn = lang === 'en';
-    const t = translations[lang];
-    document.getElementById('htmlTag').dir = isEn ? 'ltr' : 'rtl';
-    document.getElementById('langToggle').innerText = t.toggle;
-    document.getElementById('txt-title').innerText = t.title;
-    document.getElementById('txt-subtitle').innerText = t.subtitle;
-    document.getElementById('lbl-brand').innerText = t.brand;
-    document.getElementById('lbl-type').innerText = t.type;
-    document.getElementById('searchInput').placeholder = t.search;
-    document.getElementById('opt-brand-default').innerText = t.select;
-    document.getElementById('opt-type-default').innerText = t.select;
-    document.getElementById('txt-footer').innerText = t.footer;
-    fillSelect('brandSelect', t.brands, DB_BRANDS, t.select);
-    fillSelect('typeSelect', t.types, DB_TYPES, t.select);
-    fetchData();
+  window.onload = () => { updateUI(); fetchData(); };
+
+  function toggleLang() {
+    currentLang = currentLang === 'ar' ? 'en' : 'ar';
+    document.getElementById('htmlTag').dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+    document.getElementById('langBtn').innerText = currentLang === 'ar' ? 'EN' : 'AR';
+    updateUI();
   }
 
-  function toggleLang() { setLanguage(currentLang === 'ar' ? 'en' : 'ar'); }
+  function updateUI() {
+    const t = UI_TEXT[currentLang];
+    document.getElementById('appTitle').innerText = t.title;
+    document.getElementById('appSubtitle').innerText = t.sub;
+    document.getElementById('titleStep1').innerHTML = `<i class="fa-solid fa-mobile-screen-button"></i> ${t.step1}`;
+    document.getElementById('backText1').innerText = t.back;
+    document.getElementById('backText2').innerText = t.back;
+    document.getElementById('searchInput').placeholder = t.search;
+    document.getElementById('footerText').innerText = t.footer;
+    initGrids();
+  }
 
-  function fillSelect(id, displayList, valueList, defaultTxt) {
-    const el = document.getElementById(id);
-    el.innerHTML = defaultTxt ? `<option value="" disabled selected>${defaultTxt}</option>` : '';
-    displayList.forEach((text, i) => {
-      const opt = document.createElement('option');
-      opt.value = valueList[i]; opt.innerText = text; el.appendChild(opt);
+  function initGrids() {
+    const bGrid = document.getElementById('brandsGrid');
+    bGrid.innerHTML = '';
+    DB_BRANDS.forEach((b, i) => {
+      const item = document.createElement('div');
+      item.className = 'grid-item';
+      item.style.animationDelay = `${i * 0.04}s`;
+      item.onclick = () => { selectedBrand = b.ar; document.getElementById('selectedBrandTitle').innerText = (currentLang==='ar'?b.ar:b.en); showStep('types'); };
+      item.innerHTML = `<img src="${b.img}" onerror="this.src='https://img.icons8.com/ios/50/000000/smartphone.png'"><span>${currentLang==='ar'?b.ar:b.en}</span>`;
+      bGrid.appendChild(item);
     });
+
+    const tGrid = document.getElementById('typesGrid');
+    tGrid.innerHTML = '';
+    DB_TYPES[currentLang].forEach((t, i) => {
+      const item = document.createElement('div');
+      item.className = 'grid-item';
+      item.style.animationDelay = `${i * 0.04}s`;
+      item.onclick = () => { selectedType = DB_TYPES['ar'][i]; showStep('results'); renderList(); };
+      item.innerHTML = `<span>${t}</span>`;
+      tGrid.appendChild(item);
+    });
+  }
+
+  function showStep(s) {
+    document.querySelectorAll('.step-view').forEach(v => v.classList.remove('active'));
+    document.getElementById('step-' + s).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   async function fetchData() {
     try {
       const res = await fetch(apiUrl);
       allData = await res.json();
-      document.getElementById('typeSelect').disabled = false;
-      renderList();
     } catch (e) { console.error("Error", e); }
   }
 
-  function onBrandOrTypeChange() {
-    if (document.getElementById('brandSelect').value && document.getElementById('typeSelect').value) {
-      document.getElementById('searchInput').style.display = 'block';
-      renderList();
-    }
-  }
-
   function renderList() {
-    const brand = document.getElementById('brandSelect').value.toLowerCase();
-    const type = document.getElementById('typeSelect').value.toLowerCase();
-    const query = document.getElementById('searchInput').value.toLowerCase();
+    const query = document.getElementById('searchInput').value.toLowerCase().trim();
     const list = document.getElementById('productsList');
     list.innerHTML = '';
+
     const filtered = allData.slice(1).filter(row => {
-      return row[3].toString().toLowerCase() === brand && row[2].toString().toLowerCase() === type && row[0].toString().toLowerCase().includes(query);
+      const bMatch = row[3].toString().trim() === selectedBrand;
+      const tMatch = row[2].toString().trim() === selectedType;
+      if (!bMatch || !tMatch) return false;
+      if (query === "") return true;
+      const model = row[0].toString().toLowerCase();
+      const comp = row[1].toString().toLowerCase();
+      return model.includes(query) || query.includes(model) || comp.includes(query);
     });
-    if (filtered.length === 0 && document.getElementById('typeSelect').value) {
-        list.innerHTML = `<p style="text-align:center; color:#a0aec0; margin-top:20px;">${currentLang==='ar'?'لا توجد نتائج..':'No results found..'}</p>`;
-        return;
+
+    if (filtered.length === 0) {
+      list.innerHTML = `<div style="text-align:center; padding:50px; color:#94a3b8;"><i class="fa-solid fa-magnifying-glass fa-3x" style="margin-bottom:15px; opacity:0.3;"></i><br>${UI_TEXT[currentLang].noResult}</div>`;
+      return;
     }
-    filtered.forEach(row => {
+
+    filtered.forEach((row, i) => {
+      const model = row[0].toString().toLowerCase();
       const div = document.createElement('div');
       div.className = 'item';
+      div.style.animationDelay = `${i * 0.02}s`;
+      if (query !== "" && (model.includes(query) || query.includes(model))) div.classList.add('matched');
       div.innerHTML = `<span class="name">${row[0]}</span><span class="compatibility">${row[1]}</span>`;
       list.appendChild(div);
     });
