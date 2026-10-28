@@ -1009,5 +1009,51 @@
     });
   }
 </script>
+<script>
+async function checkAppUpdate() {
+    try {
+        // استبدل الرابط أدناه برابط ملف version.json الخام (Raw) من GitHub
+        const response = await fetch('https://raw.githubusercontent.com/sdcvbns/allinoneplus/refs/heads/main/version.json' + new Date().getTime());
+        const data = await response.json();
+
+        // رقم النسخة الحالي لتطبيقك (يمكنك تحديثه يدوياً هنا كلما رفعت نسخة جديدة لتتطابق مع متجر بلاي)
+        const currentVersionCode = 14; // <-- غيّر هذا الرقم ليطابق نسختك الحالية
+
+        if (data.latestVersionCode > currentVersionCode) {
+            // إذا كان الإصدار في جيت هب أكبر من الحالي، أظهر شاشة التحديث الإجباري
+            showForceUpdateModal(data.updateMessage);
+        }
+    } catch (error) {
+        console.log("خطأ في التحقق من التحديثات:", error);
+    }
+}
+
+function showForceUpdateModal(message) {
+    // إنشاء طبقة تمنع المستخدم من التفاعل مع التطبيق وتجبره على التحديث
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.9); z-index: 999999;
+        display: flex; justify-content: center; align-items: center;
+        font-family: 'Segoe UI', Tahoma, sans-serif; direction: rtl; text-align: center;
+    `;
+
+    overlay.innerHTML = `
+        <div style="background: white; padding: 30px; border-radius: 15px; width: 85%; max-width: 400px; box-shadow: 0 5px 20px rgba(0,0,0,0.3);">
+            <h2 style="color: #d9534f; margin-top: 0;">تحديث إجباري مطلوب</h2>
+            <p style="color: #333; font-size: 15px; line-height: 1.6; margin-bottom: 25px;">${message}</p>
+            <a href="https://play.google.com/store/apps/details?id=com.yourname.studentapp" target="_blank" 
+               style="display: block; background: #28a745; color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px;">
+               تحديث من متجر جوجل بلاي
+            </a>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+}
+
+// تشغيل الفحص فور فتح الصفحة
+window.onload = checkAppUpdate;
+</script>
 </body>
 </html>
