@@ -1,6 +1,6 @@
 {
-  "latestVersionCode": "1.2.2",
-  "latestVersionName": "1.2.1",
-  "forceUpdate": true,
-  "updateMessage": "يتوفر تحديث جديد يرجى التحديث للمتابعة وضمان استقرار التطبيق."
+  "versionCode": 1,
+  "versionName": "1.2.2",
+  "apkUrl": "https://play.google.com/store/apps/details?id=com.alagah.pro",
+  "changelog": "تحسينات واضافات جديدة في التحديث السابق"
 }
