@@ -1,355 +1,1013 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" id="htmlTag">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الآغا برو</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --accent: #38bdf8;
-            --text: #f8fafc;
-            --text-muted: #94a3b8;
-            --success: #22c55e;
-            --warning: #eab308;
-            --danger: #ef4444;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<title>الآغا برو - التوافق الذكي</title>
+<link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text);
-            margin: 0;
-            padding: 15px;
-        }
+<style>
+  :root {
+    --primary: #0052d4;
+    --secondary: #4364f7;
+    --accent: #6fb1fc;
+    --vibrant-gradient: linear-gradient(135deg, #0052d4 0%, #4364f7 50%, #6fb1fc 100%);
+    --bg-color: #f8fafc;
+    --card-white: #ffffff;
+    --text-dark: #0f172a;
+    --text-light: #475569;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --shadow-premium: 0 10px 20px -5px rgba(0, 0, 0, 0.08);
+  }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--card-bg);
-            padding: 15px 20px;
-            border-radius: 14px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
+  * { 
+    margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; 
+    user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;
+  }
 
-        .header h2 { margin: 0; font-size: 1.3rem; color: var(--accent); }
+  body {
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+    background-color: var(--bg-color);
+    min-height: 100vh;
+    color: var(--text-dark);
+  }
 
-        .status-badge {
-            background: rgba(56, 189, 248, 0.15);
-            color: var(--accent);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-        }
+  header { 
+    background: var(--vibrant-gradient);
+    padding: 2.5rem 1rem 3.5rem; 
+    text-align: center; 
+    color: white; 
+    border-radius: 0 0 30px 30px; 
+    box-shadow: 0 6px 20px rgba(0, 82, 212, 0.25);
+    position: relative;
+    z-index: 1;
+  }
 
-        .orders-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 15px;
-        }
+  header h1 { 
+    font-size: 2rem; font-family: 'Changa', sans-serif; 
+    margin: 0; text-shadow: 1px 2px 4px rgba(0,0,0,0.15);
+  }
 
-        .order-card {
-            background: var(--card-bg);
-            border-radius: 14px;
-            padding: 15px;
-            border-right: 5px solid var(--accent);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            position: relative;
-        }
+  header p { opacity: 0.95; font-weight: 400; font-size: 0.95rem; margin-top: 4px; }
 
-        .order-card.new-order {
-            border-right-color: var(--warning);
-            animation: pulse 2s infinite;
-        }
+  .lang-switcher {
+    position: absolute; top: 15px; right: 15px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+    color: white; border: 1px solid rgba(255,255,255,0.4);
+    padding: 5px 12px; border-radius: 10px; cursor: pointer;
+    font-weight: 700; font-size: 0.8rem; transition: 0.3s;
+  }
+  .lang-switcher:hover { background: white; color: var(--primary); }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(234, 179, 8, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); }
-        }
+  .container { max-width: 550px; margin: -25px auto 30px; padding: 0 15px; position: relative; z-index: 10; }
 
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 8px;
-            margin-bottom: 10px;
-        }
+  .step-view { display: none; }
+  .step-view.active { 
+    display: block; 
+    animation: entrance 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both; 
+  }
 
-        .order-id { font-weight: bold; color: var(--accent); }
-        .order-date { font-size: 0.75rem; color: var(--text-muted); }
+  @keyframes entrance {
+    from { opacity: 0; transform: translateY(20px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
 
-        .delete-btn {
-            background: rgba(239, 68, 68, 0.15);
-            color: var(--danger);
-            border: none;
-            padding: 5px 8px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: 0.2s;
-        }
-        .delete-btn:hover { background: var(--danger); color: white; }
+  .step-title { 
+    text-align: center; margin-bottom: 15px; color: var(--text-dark); 
+    font-weight: 700; font-size: 1.1rem; 
+    background: var(--card-white); padding: 12px; border-radius: var(--radius-md);
+    box-shadow: var(--shadow-premium);
+    border-bottom: 3px solid var(--primary);
+  }
 
-        .info-group { margin-bottom: 6px; font-size: 0.9rem; }
-        .info-label { color: var(--text-muted); }
+  .grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  
+  .grid-item { 
+    background: var(--card-white); 
+    border-radius: var(--radius-lg); 
+    padding: 16px 10px; 
+    text-align: center; cursor: pointer; 
+    transition: all 0.25s ease;
+    border: 1px solid #e2e8f0;
+    display: flex; flex-direction: column; align-items: center;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.03);
+  }
+  
+  .grid-item:hover { 
+    transform: translateY(-5px); 
+    border-color: var(--primary);
+    box-shadow: 0 10px 20px rgba(0, 82, 212, 0.1);
+  }
+  
+  .grid-item img { 
+    width: 45px; height: 45px; object-fit: contain; margin-bottom: 8px; 
+    transition: 0.3s;
+  }
+  .grid-item:hover img { transform: scale(1.1); }
+  .grid-item span { font-size: 0.95rem; font-weight: 700; color: var(--text-dark); }
 
-        .items-list {
-            background: #0f172a;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 10px 0;
-            font-size: 0.9rem;
-            color: #38bdf8;
-            font-weight: bold;
-        }
+  .back-btn {
+    background: var(--card-white); border: 1.5px solid #e2e8f0; padding: 8px 14px; 
+    border-radius: 10px; cursor: pointer; font-weight: 700; margin-bottom: 12px; 
+    display: inline-flex; align-items: center; gap: 6px; color: var(--text-light); font-size: 0.9rem;
+    transition: 0.2s;
+  }
+  .back-btn:hover { border-color: var(--primary); color: var(--primary); }
 
-        .reply-section {
-            margin-top: 15px;
-            border-top: 1px solid #334155;
-            padding-top: 12px;
-        }
+  #searchInput, .form-control {
+    width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; 
+    border-radius: 12px; font-size: 0.95rem; margin-bottom: 12px; 
+    box-sizing: border-box; outline: none; transition: 0.3s;
+    box-shadow: var(--shadow-premium); font-weight: 500; background: var(--card-white);
+    user-select: text !important; -webkit-user-select: text !important;
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+  }
+  #searchInput:focus, .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0, 82, 212, 0.1); }
 
-        .reply-title {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
+  .custom-select-trigger {
+    display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer; background: var(--card-white);
+  }
+  .custom-select-trigger span { color: var(--text-dark); font-weight: 600; font-size: 0.95rem; }
+  .custom-select-trigger span.placeholder { color: #94a3b8; font-weight: 400; }
+  .custom-select-trigger i { color: var(--primary); font-size: 0.9rem; }
 
-        .reply-btn-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
+  .select-modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+    display: flex; align-items: flex-end; justify-content: center;
+    z-index: 10000; opacity: 0; visibility: hidden; transition: 0.3s ease;
+  }
+  .select-modal-overlay.show { opacity: 1; visibility: visible; }
+  
+  .select-modal-sheet {
+    background: var(--card-white); width: 100%; max-width: 500px;
+    border-radius: 25px 25px 0 0; padding: 20px 15px 30px;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
+    transform: translateY(100%); transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-height: 70vh; display: flex; flex-direction: column;
+  }
+  .select-modal-overlay.show .select-modal-sheet { transform: translateY(0); }
 
-        .reply-btn {
-            padding: 8px 10px;
-            border: none;
-            border-radius: 8px;
-            font-family: inherit;
-            font-weight: bold;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            color: white;
-        }
+  .sheet-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 15px; border-bottom: 1.5px solid #f1f5f9; padding-bottom: 10px;
+  }
+  .sheet-title { font-size: 1.1rem; font-weight: 700; color: var(--text-dark); }
+  .sheet-close { font-size: 1.2rem; color: #94a3b8; cursor: pointer; }
 
-        .reply-btn:hover { opacity: 0.85; transform: translateY(-2px); }
+  .sheet-list { overflow-y: auto; max-height: 45vh; display: flex; flex-direction: column; gap: 6px; }
+  .sheet-option {
+    padding: 12px 16px; border-radius: 10px; background: #f8fafc;
+    font-weight: 700; color: var(--text-dark); cursor: pointer; font-size: 0.95rem;
+    display: flex; justify-content: space-between; align-items: center;
+    border: 1px solid #e2e8f0;
+  }
+  .sheet-option:hover, .sheet-option.selected {
+    background: #eff6ff; border-color: var(--primary); color: var(--primary);
+  }
+  .sheet-option i { display: none; }
+  .sheet-option.selected i { display: inline-block; color: var(--primary); }
 
-        .btn-add { background-color: var(--success); }
-        .btn-none { background-color: var(--danger); }
-        .btn-err { background-color: var(--warning); color: #000; }
-        .btn-custom { background-color: var(--accent); color: #000; grid-column: span 2; }
+  .file-upload-wrapper { position: relative; width: 100%; margin-bottom: 12px; }
+  .file-upload-input { display: none; }
+  .file-upload-btn {
+    display: flex; align-items: center; justify-content: space-between; width: 100%;
+    padding: 12px 16px; background: var(--card-white); border: 2px dashed var(--primary);
+    border-radius: 12px; cursor: pointer; transition: 0.3s;
+  }
+  .file-upload-btn:hover { background: #eff6ff; }
+  .file-upload-btn span { font-weight: 600; color: var(--text-light); font-size: 0.9rem; }
+  .file-upload-btn i { color: var(--primary); font-size: 1.1rem; }
 
-        .custom-msg-box {
-            display: none;
-            margin-top: 10px;
-        }
+  .form-card {
+    background: var(--card-white); border-radius: var(--radius-lg);
+    padding: 20px; box-shadow: var(--shadow-premium); border: 1px solid #e2e8f0;
+  }
 
-        .custom-msg-box input {
-            width: 100%;
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px solid var(--accent);
-            background: #0f172a;
-            color: white;
-            box-sizing: border-box;
-            margin-bottom: 6px;
-            font-family: inherit;
-        }
+  .form-group { margin-bottom: 12px; text-align: right; }
+  .form-group label { display: block; font-weight: 700; margin-bottom: 6px; color: var(--text-dark); font-size: 0.9rem; }
+  .phone-input-group { display: flex; gap: 8px; }
+  .phone-input-group .code-trigger { width: 110px; font-weight: 700; }
+  .phone-input-group input { flex: 1; }
 
-        .custom-msg-box button {
-            width: 100%;
-            padding: 8px;
-            background: var(--accent);
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+  .submit-btn {
+    width: 100%; background: var(--vibrant-gradient); color: white; border: none;
+    padding: 14px; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer;
+    box-shadow: 0 6px 15px rgba(0, 82, 212, 0.25); transition: 0.3s; margin-top: 8px;
+    display: flex; justify-content: center; align-items: center; gap: 8px;
+  }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 82, 212, 0.35); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        .current-reply {
-            margin-top: 10px;
-            padding: 8px;
-            background: rgba(56, 189, 248, 0.1);
-            border-radius: 8px;
-            font-size: 0.85rem;
-            color: var(--accent);
-        }
-    </style>
+  /* زر إرسال طلب آخر بتصميم مرتب وصغير غير ضخم */
+  .secondary-action-btn {
+    background: #ffffff; color: var(--primary); border: 1.5px solid var(--primary);
+    padding: 10px 16px; border-radius: 10px; font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    width: 100%; box-shadow: 0 2px 6px rgba(0, 82, 212, 0.05);
+  }
+  .secondary-action-btn:hover { background: #eff6ff; }
+
+  .status-card {
+    text-align: center; background: var(--card-white); padding: 30px 20px;
+    border-radius: var(--radius-lg); box-shadow: var(--shadow-premium);
+  }
+  /* تصغير حجم أيقونة حالة الطلب لتصبح متناسقة وأنيقة */
+  .status-card i.status-main-icon { font-size: 2.8rem; margin-bottom: 12px; animation: pulse 2s infinite; }
+  @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
+
+  .status-reply-box {
+    margin-top: 12px; padding: 14px; background: #f0fdf4; border-radius: 12px;
+    font-size: 1rem; font-weight: bold; color: #16a34a; border: 1.5px solid #bbf7d0;
+  }
+
+  .custom-modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 99999; opacity: 0; visibility: hidden; transition: 0.3s ease;
+  }
+  .custom-modal-overlay.show { opacity: 1; visibility: visible; }
+  .custom-modal-box {
+    background: var(--card-white); width: 85%; max-width: 360px;
+    padding: 25px 20px; border-radius: var(--radius-lg); text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    transform: scale(0.9) translateY(15px); transition: 0.3s;
+  }
+  .custom-modal-overlay.show .custom-modal-box { transform: scale(1) translateY(0); }
+  .custom-modal-icon { font-size: 2.5rem; margin-bottom: 12px; color: var(--primary); }
+  .custom-modal-title { font-size: 1.15rem; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+  .custom-modal-desc { font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px; line-height: 1.5; }
+  .custom-modal-btn {
+    background: var(--vibrant-gradient); color: white; border: none;
+    width: 100%; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.95rem;
+    cursor: pointer; box-shadow: 0 4px 12px rgba(0, 82, 212, 0.25);
+  }
+
+  #productsList { 
+    background: var(--card-white); border-radius: var(--radius-lg); 
+    max-height: 420px; overflow-y: auto;
+    box-shadow: var(--shadow-premium);
+    border: 1px solid #e2e8f0;
+  }
+  
+  .item { 
+    padding: 14px 16px; border-bottom: 1px solid #f1f5f9; 
+    display: flex; justify-content: space-between; align-items: center;
+    transition: 0.2s; font-size: 0.95rem;
+  }
+  .item:last-child { border-bottom: none; }
+  .item:hover { background: #f8fafc; }
+  .item.matched { background: #eff6ff; border-right: 4px solid var(--primary); }
+  .item .name { font-weight: 700; color: var(--text-dark); }
+  .item .compatibility { 
+    background: var(--primary); color: white; 
+    padding: 4px 12px; border-radius: 8px; 
+    font-size: 0.85rem; font-weight: 700; 
+  }
+
+  footer { text-align: center; padding: 2rem 1rem; color: var(--text-light); font-weight: 600; font-size: 0.85rem; }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 8px; }
+</style>
 </head>
-<body>
+<body oncontextmenu="return false;"> 
 
-    <div class="header">
-        <h2>📦 لوحة إدارة الطلبات والردود - الآغا برو</h2>
-        <span class="status-badge" id="live-status">مباشر 🟢</span>
+<button class="lang-switcher" id="langBtn" onclick="toggleLang()">EN</button>
+
+<header>
+  <h1 id="appTitle">الآغا برو</h1>
+  <p id="appSubtitle">دليل التوافقات الذكي</p>
+</header>
+
+<main class="container">
+  
+  <div id="selectModal" class="select-modal-overlay">
+    <div class="select-modal-sheet">
+      <div class="sheet-header">
+        <span id="sheetModalTitle" class="sheet-title">اختر من القائمة</span>
+        <i class="fa-solid fa-xmark sheet-close" onclick="closeSelectModal()"></i>
+      </div>
+      <div class="sheet-list" id="sheetOptionsList"></div>
     </div>
+  </div>
 
-    <div class="orders-grid" id="ordersContainer">
-        <p style="text-align:center; grid-column: 1/-1;">جاري تحميل الطلبات...</p>
+  <div id="customModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+      <div id="modalIconContainer" class="custom-modal-icon">
+        <i class="fa-solid fa-circle-exclamation" id="modalIcon"></i>
+      </div>
+      <div id="modalTitle" class="custom-modal-title">تنبيه</div>
+      <div id="modalDesc" class="custom-modal-desc">رسالة التنبيه هنا</div>
+      <button class="custom-modal-btn" onclick="closeCustomModal()">موافق</button>
     </div>
+  </div>
 
-    <script>
-        const ADMIN_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzrb_C-g6l3HouHcj45LahD0I_YLrUoaIYTMLzcE5HuQI7SWNugwQntUycC7pZjAWP9uQ/exec";
+  <!-- 1. واجهة اختيار الشركات والأقسام الرئيسية -->
+  <div id="step-brands" class="step-view active">
+    <div class="step-title" id="titleStep1"><i class="fa-solid fa-mobile-screen-button"></i> اختر القسم أو الشركة</div>
+    <div class="grid-menu" id="brandsGrid"></div>
+  </div>
 
-        let previousOrderCount = 0;
-        let isFirstLoad = true;
-        let activeCustomInputId = null; // الاحتفاظ بمعرف الحقل النشط أثناء الكتابة
+  <!-- 2. واجهة إدخال البيانات الشخصية -->
+  <div id="step-user-info" class="step-view">
+    <button class="back-btn" onclick="goToHome()"><i class="fa-solid fa-chevron-right"></i> <span id="backTextInfo">عودة</span></button>
+    <div class="step-title"><i class="fa-solid fa-user-check"></i> معلومات المستخدم (مطلوبة لأول مرة)</div>
+    <div class="form-card">
+      <form onsubmit="saveUserInfo(event)">
+        <div class="form-group">
+          <label>* الاسم الكامل</label>
+          <input type="text" id="infoName" class="form-control" required placeholder="أدخل اسمك الكريم">
+        </div>
+        <div class="form-group">
+          <label>* البلد</label>
+          <div class="form-control custom-select-trigger" onclick="openCustomSelect('infoCountry')">
+            <span id="infoCountryText" class="placeholder">اختر البلد</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <input type="hidden" id="infoCountry" required>
+        </div>
+        <div class="form-group">
+          <label>* رقم التواصل</label>
+          <div class="phone-input-group">
+            <div class="form-control custom-select-trigger code-trigger">
+              <span id="infoPhoneCodeText">+964</span>
+            </div>
+            <input type="hidden" id="infoPhoneCode" value="+964">
+            <input type="tel" id="infoPhone" class="form-control" required placeholder="رقم الهاتف">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>* المنطقة (المحافظة أو البلدة)</label>
+          <input type="text" id="infoCity" class="form-control" required placeholder="مثال: الموصل - برطلة">
+        </div>
+        <div class="form-group">
+          <label>* موقع المحل (المتجر)</label>
+          <input type="text" id="infoWorkLocation" class="form-control" required placeholder="مثال: شارع الرئيسي - مجمع المحلات">
+        </div>
+        <button type="submit" class="submit-btn"><i class="fa-solid fa-floppy-disk"></i> حفظ والمتابعة للطلب</button>
+      </form>
+    </div>
+  </div>
 
-        function playAlertSound() {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.type = "sine";
-            osc.frequency.setValueAtTime(587.33, ctx.currentTime);
-            gain.gain.setValueAtTime(0.1, ctx.currentTime);
-            osc.start();
-            osc.stop(ctx.currentTime + 0.3);
+  <!-- 3. واجهة طلب صيانة جهاز -->
+  <div id="step-repair" class="step-view">
+    <button class="back-btn" onclick="goToHome()"><i class="fa-solid fa-chevron-right"></i> <span id="backTextRepair">عودة</span></button>
+    <div class="step-title"><i class="fa-solid fa-screwdriver-wrench"></i> طلب صيانة جهاز</div>
+    <div class="form-card">
+      <form onsubmit="submitRepair(event)">
+        <div class="form-group">
+          <label>* اختر البلد</label>
+          <div class="form-control custom-select-trigger" onclick="openCustomSelect('repairCountry')">
+            <span id="repairCountryText" class="placeholder">اختر البلد</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <input type="hidden" id="repairCountry" required>
+        </div>
+        <div class="form-group">
+          <label>* الشركة المصنعة للهاتف</label>
+          <div class="form-control custom-select-trigger" onclick="openCustomSelect('repairBrand')">
+            <span id="repairBrandText" class="placeholder">اختر الشركة</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <input type="hidden" id="repairBrand" required>
+        </div>
+        <div class="form-group">
+          <label>* اسم الهاتف / الموديل</label>
+          <input type="text" id="repairPhoneName" class="form-control" required placeholder="أدخل اسم الموديل أو الطراز">
+        </div>
+        <div class="form-group">
+          <label>* نوع العطل</label>
+          <div class="form-control custom-select-trigger" onclick="openCustomSelect('repairFault')">
+            <span id="repairFaultText" class="placeholder">اختر نوع العطل</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <input type="hidden" id="repairFault" required>
+        </div>
+        <div class="form-group">
+          <label>* صورة للهاتف (أو للجهاز)</label>
+          <div class="file-upload-wrapper">
+            <input type="file" id="repairImage" class="file-upload-input" accept="image/*" onchange="updateFileName(this)">
+            <label for="repairImage" class="file-upload-btn">
+              <span id="fileNameDisplay">اختر صورة الجهاز...</span>
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+            </label>
+          </div>
+        </div>
+        <button type="submit" id="repairSubmitBtn" class="submit-btn"><i class="fa-solid fa-paper-plane"></i> إرسال الطلب</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. واجهة طلب توافق قطعة -->
+  <div id="step-compatibility-request" class="step-view">
+    <button class="back-btn" onclick="goToHome()"><i class="fa-solid fa-chevron-right"></i> <span id="backTextCompReq">عودة</span></button>
+    <div class="step-title"><i class="fa-solid fa-puzzle-piece"></i> طلب توافق قطعة</div>
+    <div class="form-card">
+      <form onsubmit="submitCompatibilityRequest(event)">
+        <div class="form-group">
+          <label>* الشركة المصنعة</label>
+          <div class="form-control custom-select-trigger" onclick="openCustomSelect('compReqBrand')">
+            <span id="compReqBrandText" class="placeholder">اختر الشركة</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <input type="hidden" id="compReqBrand" required>
+        </div>
+        <div class="form-group">
+          <label>* اسم القطعة (الموديل / الجهاز)</label>
+          <input type="text" id="compReqPartName" class="form-control" required placeholder="أدخل اسم أو موديل القطعة المطلوبة">
+        </div>
+        <div class="form-group">
+          <label>* نوع التوافق المطلوب</label>
+          <div class="form-control custom-select-trigger" onclick="openCustomSelect('compReqTypeSelect')">
+            <span id="compReqTypeSelectText" class="placeholder">اختر نوع التوافق</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <input type="hidden" id="compReqTypeSelect" required>
+        </div>
+        <div class="form-group" id="customCompTypeGroup" style="display:none;">
+          <label>* حدد نوع التوافق بوضوح</label>
+          <input type="text" id="compReqCustomText" class="form-control" placeholder="اكتب ما تريد هنا...">
+        </div>
+        <button type="submit" id="compSubmitBtn" class="submit-btn"><i class="fa-solid fa-paper-plane"></i> إرسال الطلب</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. واجهة حالة الطلب والمتابعة -->
+  <div id="step-status" class="step-view">
+    <div class="status-card">
+      <div id="statusIconContainer">
+        <i class="fa-solid fa-clock-rotate-left status-main-icon" id="statusIcon" style="color: #f59e0b;"></i>
+      </div>
+      <h2 style="font-size: 1.4rem; margin-bottom: 6px; color: var(--text-dark);" id="statusTitleText">تم استلام طلبك</h2>
+      <p style="color: var(--text-light); margin-bottom: 8px; font-size: 0.95rem;" id="statusDescText">بانتظار رد الادارة</p>
+      
+      <div class="status-reply-box" id="statusReplyDisplay" style="display: none;"></div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 18px;">
+        <button class="secondary-action-btn" id="newOrderBtn" style="display: none;" onclick="clearAndSendNewOrder()">
+          <i class="fa-solid fa-plus-circle"></i> ارسال طلب اخر
+        </button>
+        <button class="submit-btn" style="background: #64748b; padding: 12px; font-size: 0.95rem;" onclick="goToHome()">العودة إلى الرئيسية</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. واجهة اختيار أنواع قطع الغيار -->
+  <div id="step-types" class="step-view">
+    <button class="back-btn" onclick="showStep('brands')"><i class="fa-solid fa-chevron-right"></i> <span id="backText1">عودة</span></button>
+    <div class="step-title" id="selectedBrandTitle"></div>
+    <div class="grid-menu" id="typesGrid"></div>
+  </div>
+
+  <!-- 7. واجهة نتائج البحث -->
+  <div id="step-results" class="step-view">
+    <button class="back-btn" onclick="showStep('types')"><i class="fa-solid fa-chevron-right"></i> <span id="backText2">عودة</span></button>
+    <div style="position:relative; overflow: visible;">
+        <input type="text" id="searchInput" oninput="renderList()">
+        <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:16px; top:14px; color:var(--primary); font-size: 1rem;"></i>
+    </div>
+    <div id="productsList"></div>
+  </div>
+</main>
+
+<footer><span id="footerText">جميع الحقوق محفوظة © الآغا برو 2026</span></footer>
+
+<script>
+  document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'u' || e.key === 'a' || e.key === 's')) {
+      e.preventDefault();
+      return false;
+    }
+  });
+
+  const ADMIN_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzrb_C-g6l3HouHcj45LahD0I_YLrUoaIYTMLzcE5HuQI7SWNugwQntUycC7pZjAWP9uQ/exec";
+  const apiUrl = "https://script.google.com/macros/s/AKfycbzG8ppzM1qIVFSjUp7FfRMYL9vQbH1cIgHUceaIDQgK1yh7Pir_rbFHYREJ8Qgl3ONDvA/exec";
+
+  let allData = [];
+  let selectedBrand = ""; 
+  let selectedType = "";
+  let currentLang = 'ar';
+  let isLoadingData = false;
+  let pendingDestination = "";
+  let statusInterval = null;
+
+  const DB_BRANDS = [
+    { ar: "ايفون", en: "iPhone", img: "https://h.top4top.io/p_36990v39l0.jpg" },
+    { ar: "سامسونج", en: "Samsung", img: "https://b.top4top.io/p_3699ftzh80.jpeg" },
+    { ar: "شاومي", en: "Xiaomi", img: "https://e.top4top.io/p_3699zoev12.png" },
+    { ar: "هواوي", en: "Huawei", img: "https://b.top4top.io/p_3699f74m40.png" },
+    { ar: "هونر", en: "Honor", img: "https://h.top4top.io/p_3699rooyv8.jpeg" },
+    { ar: "اوبو", en: "Oppo", img: "https://b.top4top.io/p_3699vi4kc1.jpg" },
+    { ar: "فيفو", en: "Vivo", img: "https://g.top4top.io/p_3699nr78i0.png" },
+    { ar: "انفنكس", en: "Infinix", img: "https://l.top4top.io/p_3699pwmr33.jpg" },
+    { ar: "تكنو", en: "Tecno", img: "https://a.top4top.io/p_3699ns6wj0.png" },
+    { ar: "ريلمي", en: "Realme", img: "https://e.top4top.io/p_36999axcs0.png" },
+    { ar: "آيتل", en: "Itel", img: "https://h.top4top.io/p_3699dh6mj0.png" }
+  ];
+
+  const DB_TYPES = {
+    ar: ["شاشات", "بطاريات", "گفرات", "فلاتات شحن", "ايسيات", "لواصق", "شرائط"],
+    en: ["Screens", "Batteries", "Covers", "Charging Flex", "ICs", "Stickers", "Flex Cables"]
+  };
+
+  const SELECT_OPTIONS_DATA = {
+    infoCountry: {
+      title: "اختر البلد",
+      options: [
+        { label: "العراق", value: "العراق", code: "+964" },
+        { label: "السعودية", value: "السعودية", code: "+966" },
+        { label: "الإمارات", value: "الإمارات", code: "+971" },
+        { label: "الكويت", value: "الكويت", code: "+965" },
+        { label: "الأردن", value: "الأردن", code: "+962" },
+        { label: "مصر", value: "مصر", code: "+20" },
+        { label: "سوريا", value: "سوريا", code: "+963" },
+        { label: "تركيا", value: "تركيا", code: "+90" }
+      ]
+    },
+    repairCountry: {
+      title: "اختر البلد",
+      options: ["العراق", "السعودية", "الإمارات", "الكويت", "الأردن", "مصر", "سوريا", "تركيا"]
+    },
+    repairBrand: {
+      title: "اختر الشركة",
+      options: ["ايفون", "سامسونج", "شاومي", "هواوي", "هونر", "اوبو", "فيفو", "انفنكس", "تكنو", "ريلمي", "آيتل"]
+    },
+    compReqBrand: {
+      title: "اختر الشركة",
+      options: ["ايفون", "سامسونج", "شاومي", "هواوي", "هونر", "اوبو", "فيفو", "انفنكس", "تكنو", "ريلمي", "آيتل"]
+    },
+    repairFault: {
+      title: "اختر نوع العطل",
+      options: ["شاشة", "بطارية", "كاميرا", "صوت", "غير ذلك"]
+    },
+    compReqTypeSelect: {
+      title: "اختر نوع التوافق",
+      options: ["شاشة", "بطارية", "فلاتة شحن", "كاميرا", "غير ذلك"]
+    }
+  };
+
+  const UI_TEXT = {
+    ar: { title: "الآغا برو", sub: "دليل التوافقات الذكي", step1: "اختر القسم أو الشركة", back: "عودة", search: "ابحث عن موديل أو توافق...", footer: "جميع الحقوق محفوظة © الآغا برو 2026", noResult: "لا توجد نتائج مطابقة.." },
+    en: { title: "Al-Agha Pro", sub: "Smart Compatibility Guide", step1: "Select Section or Brand", back: "Back", search: "Search model or compatibility...", footer: "All Rights Reserved © Al-Agha Pro 2026", noResult: "No results found.." }
+  };
+
+  window.onload = () => { 
+    updateUI();
+    fetchData(); 
+  };
+
+  let activeTargetInputId = "";
+
+  function openCustomSelect(inputId) {
+    activeTargetInputId = inputId;
+    const data = SELECT_OPTIONS_DATA[inputId];
+    if (!data) return;
+
+    document.getElementById('sheetModalTitle').innerText = data.title;
+    const listContainer = document.getElementById('sheetOptionsList');
+    listContainer.innerHTML = '';
+
+    const currentValue = document.getElementById(inputId).value;
+
+    data.options.forEach(opt => {
+      const val = typeof opt === 'object' ? opt.value : opt;
+      const label = typeof opt === 'object' ? opt.label : opt;
+      const code = typeof opt === 'object' ? opt.code : '';
+
+      const optDiv = document.createElement('div');
+      optDiv.className = `sheet-option ${currentValue === val ? 'selected' : ''}`;
+      optDiv.innerHTML = `<span>${label}</span><i class="fa-solid fa-check"></i>`;
+      optDiv.onclick = () => { selectCustomOption(inputId, val, label, code); };
+      listContainer.appendChild(optDiv);
+    });
+
+    document.getElementById('selectModal').classList.add('show');
+  }
+
+  function selectCustomOption(inputId, value, label, code) {
+    const hiddenInput = document.getElementById(inputId);
+    const displayText = document.getElementById(inputId + 'Text');
+
+    hiddenInput.value = value;
+    displayText.innerText = label;
+    displayText.classList.remove('placeholder');
+
+    if (inputId === 'infoCountry' && code) {
+      document.getElementById('infoPhoneCode').value = code;
+      document.getElementById('infoPhoneCodeText').innerText = code;
+    }
+
+    if (inputId === 'compReqTypeSelect') {
+      checkCustomCompType();
+    }
+
+    closeSelectModal();
+  }
+
+  function closeSelectModal() {
+    document.getElementById('selectModal').classList.remove('show');
+  }
+
+  function updateFileName(input) {
+    const display = document.getElementById('fileNameDisplay');
+    if (input.files && input.files.length > 0) {
+      display.innerText = input.files[0].name;
+      display.style.color = "var(--primary)";
+      display.style.fontWeight = "700";
+    } else {
+      display.innerText = "اختر صورة الجهاز...";
+      display.style.color = "var(--text-light)";
+      display.style.fontWeight = "600";
+    }
+  }
+
+  function showCustomModal(title, message, iconClass = "fa-solid fa-circle-exclamation", iconColor = "#0052d4") {
+    document.getElementById('modalTitle').innerText = title;
+    document.getElementById('modalDesc').innerText = message;
+    const icon = document.getElementById('modalIcon');
+    icon.className = iconClass;
+    icon.style.color = iconColor;
+    document.getElementById('customModal').classList.add('show');
+  }
+
+  function closeCustomModal() {
+    document.getElementById('customModal').classList.remove('show');
+  }
+
+  function checkUserAndProceed(destination) {
+    const activeOrderId = localStorage.getItem('alagha_active_order_id');
+    const orderHasReplied = localStorage.getItem('alagha_order_replied') === 'true';
+    
+    if (activeOrderId && !orderHasReplied) {
+      startStatusChecking();
+      showStep('status');
+      return;
+    }
+
+    pendingDestination = destination;
+    const savedInfo = localStorage.getItem('alagha_user_info');
+    if (!savedInfo) {
+      showStep('user-info');
+    } else {
+      showStep(destination);
+    }
+  }
+
+  function saveUserInfo(e) {
+    e.preventDefault();
+    if (!document.getElementById('infoCountry').value) {
+      showCustomModal("تنبيه", "يرجى اختيار البلد من القائمة أولاً.");
+      return;
+    }
+    const uData = {
+      name: document.getElementById('infoName').value,
+      country: document.getElementById('infoCountry').value,
+      phone: document.getElementById('infoPhoneCode').value + ' ' + document.getElementById('infoPhone').value,
+      city: document.getElementById('infoCity').value,
+      workLocation: document.getElementById('infoWorkLocation').value
+    };
+    localStorage.setItem('alagha_user_info', JSON.stringify(uData));
+    showStep(pendingDestination);
+  }
+
+  function checkCustomCompType() {
+    const val = document.getElementById('compReqTypeSelect').value;
+    const customGroup = document.getElementById('customCompTypeGroup');
+    const customInput = document.getElementById('compReqCustomText');
+    if (val === "غير ذلك") {
+      customGroup.style.display = "block";
+      customInput.required = true;
+    } else {
+      customGroup.style.display = "none";
+      customInput.required = false;
+      customInput.value = "";
+    }
+  }
+
+  async function submitRepair(e) {
+    e.preventDefault();
+    if (!document.getElementById('repairCountry').value || !document.getElementById('repairBrand').value || !document.getElementById('repairFault').value) {
+      showCustomModal("تنبيه", "يرجى ملء جميع الخيارات المطلوبة بشكل صحيح.");
+      return;
+    }
+
+    const btn = document.getElementById('repairSubmitBtn');
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...`;
+
+    const userInfo = JSON.parse(localStorage.getItem('alagha_user_info') || '{}');
+    const repairData = {
+      action: "addNewOrder",
+      customerName: userInfo.name || 'غير محدد',
+      customerPhone: userInfo.phone || '',
+      customerAddress: (userInfo.country || '') + ' - ' + (userInfo.city || '') + ' (' + (userInfo.workLocation || '') + ')',
+      cartItems: [
+        { name: "طلب صيانة (" + document.getElementById('repairBrand').value + " - " + document.getElementById('repairPhoneName').value + ")", price: 0, qty: 1 }
+      ],
+      totalAmount: 0
+    };
+
+    const res = await sendToAdminSystem(repairData);
+    btn.disabled = false;
+    btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> إرسال الطلب`;
+
+    if (res && res.status === "success") {
+      localStorage.setItem('alagha_active_order_id', res.orderId);
+      localStorage.setItem('alagha_order_replied', 'false');
+      resetStatusViewToWaiting();
+      startStatusChecking();
+      showStep('status');
+    }
+  }
+
+  async function submitCompatibilityRequest(e) {
+    e.preventDefault();
+    if (!document.getElementById('compReqBrand').value || !document.getElementById('compReqTypeSelect').value) {
+      showCustomModal("تنبيه", "يرجى اختيار جميع الخيارات المطلوبة أولاً.");
+      return;
+    }
+
+    const btn = document.getElementById('compSubmitBtn');
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...`;
+
+    const userInfo = JSON.parse(localStorage.getItem('alagha_user_info') || '{}');
+    const compTypeVal = document.getElementById('compReqTypeSelect').value;
+    const finalCompType = compTypeVal === "غير ذلك" ? document.getElementById('compReqCustomText').value : compTypeVal;
+    
+    const compData = {
+      action: "addNewOrder",
+      customerName: userInfo.name || 'غير محدد',
+      customerPhone: userInfo.phone || '',
+      customerAddress: (userInfo.country || '') + ' - ' + (userInfo.city || '') + ' (' + (userInfo.workLocation || '') + ')',
+      cartItems: [
+        { name: "طلب توافق (" + document.getElementById('compReqBrand').value + " - " + document.getElementById('compReqPartName').value + " - " + finalCompType + ")", price: 0, qty: 1 }
+      ],
+      totalAmount: 0
+    };
+
+    const res = await sendToAdminSystem(compData);
+    btn.disabled = false;
+    btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> إرسال الطلب`;
+
+    if (res && res.status === "success") {
+      localStorage.setItem('alagha_active_order_id', res.orderId);
+      localStorage.setItem('alagha_order_replied', 'false');
+      resetStatusViewToWaiting();
+      startStatusChecking();
+      showStep('status');
+    }
+  }
+
+  async function sendToAdminSystem(data) {
+    try {
+      const response = await fetch(ADMIN_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify(data)
+      });
+      const result = await response.json();
+      return result;
+    } catch (err) {
+      console.error("Admin Script API Error:", err);
+      showCustomModal("خطأ في الاتصال", "حدث خطأ أثناء إرسال الطلب، يرجى المحاولة مرة أخرى.", "fa-solid fa-triangle-exclamation", "#ef4444");
+      return null;
+    }
+  }
+
+  function resetStatusViewToWaiting() {
+    document.getElementById('statusTitleText').innerText = "تم استلام طلبك";
+    document.getElementById('statusDescText').innerText = "بانتظار رد الادارة";
+    document.getElementById('statusDescText').style.display = 'block';
+    document.getElementById('statusIcon').className = "fa-solid fa-clock-rotate-left status-main-icon";
+    document.getElementById('statusIcon').style.color = "#f59e0b";
+    document.getElementById('statusReplyDisplay').style.display = 'none';
+    document.getElementById('statusReplyDisplay').innerText = "";
+    document.getElementById('newOrderBtn').style.display = 'none';
+  }
+
+  function startStatusChecking() {
+    if (statusInterval) clearInterval(statusInterval);
+    
+    const orderId = localStorage.getItem('alagha_active_order_id');
+    if (!orderId) return;
+
+    async function checkStatus() {
+      try {
+        const response = await fetch(ADMIN_SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'checkOrderStatus', orderId: orderId })
+        });
+        const res = await response.json();
+        
+        if (res.status === "success" && res.data) {
+          const order = res.data;
+          const replyDisplay = document.getElementById('statusReplyDisplay');
+          const titleText = document.getElementById('statusTitleText');
+          const descText = document.getElementById('statusDescText');
+          const statusIcon = document.getElementById('statusIcon');
+          const newOrderBtn = document.getElementById('newOrderBtn');
+
+          if (order.reply) {
+            titleText.innerText = "تم الرد";
+            descText.style.display = 'none';
+            statusIcon.className = "fa-solid fa-circle-check status-main-icon";
+            statusIcon.style.color = "#22c55e";
+            
+            replyDisplay.innerText = order.reply;
+            replyDisplay.style.display = 'block';
+            newOrderBtn.style.display = 'inline-flex';
+            localStorage.setItem('alagha_order_replied', 'true');
+          } else {
+            titleText.innerText = "تم استلام طلبك";
+            descText.innerText = "بانتظار رد الادارة";
+            descText.style.display = 'block';
+            statusIcon.className = "fa-solid fa-clock-rotate-left status-main-icon";
+            statusIcon.style.color = "#f59e0b";
+            
+            replyDisplay.style.display = 'none';
+            newOrderBtn.style.display = 'none';
+            localStorage.setItem('alagha_order_replied', 'false');
+          }
         }
+      } catch (err) {
+        console.error("Error checking status:", err);
+      }
+    }
 
-        async function fetchOrders() {
-            try {
-                const response = await fetch(ADMIN_SCRIPT_URL);
-                const orders = await response.json();
-                
-                if (orders.length > previousOrderCount && !isFirstLoad) {
-                    playAlertSound();
-                }
-                
-                previousOrderCount = orders.length;
-                isFirstLoad = false;
-                renderOrders(orders);
-            } catch (err) {
-                console.error("خطأ في جلب الطلبات:", err);
-            }
-        }
+    checkStatus();
+    statusInterval = setInterval(checkStatus, 5000);
+  }
 
-        function renderOrders(orders) {
-            const container = document.getElementById('ordersContainer');
-            if (orders.length === 0) {
-                container.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">لا توجد طلبات حتى الآن.</p>';
-                return;
-            }
+  function goToHome() {
+    if (statusInterval) clearInterval(statusInterval);
+    const orderReplied = localStorage.getItem('alagha_order_replied') === 'true';
+    if (orderReplied) {
+      localStorage.removeItem('alagha_active_order_id');
+      localStorage.removeItem('alagha_order_replied');
+    }
+    showStep('brands');
+  }
 
-            // التقاط النص المكتوب وحالة العرض لصندوق الرسالة الخاصة النشط حالياً لئلا يختفي عند التحديث
-            let currentInputValue = "";
-            let customBoxDisplay = "none";
-            if (activeCustomInputId) {
-                const activeInput = document.getElementById(`input_${activeCustomInputId}`);
-                const activeBox = document.getElementById(`customBox_${activeCustomInputId}`);
-                if (activeInput) currentInputValue = activeInput.value;
-                if (activeBox) customBoxDisplay = activeBox.style.display;
-            }
+  function clearAndSendNewOrder() {
+    if (statusInterval) clearInterval(statusInterval);
+    localStorage.removeItem('alagha_active_order_id');
+    localStorage.removeItem('alagha_order_replied');
+    showStep('brands');
+  }
 
-            container.innerHTML = orders.map(order => `
-                <div class="order-card ${order.status === 'قيد المراجعة' ? 'new-order' : ''}">
-                    <div class="order-header">
-                        <span class="order-id">${order.id}</span>
-                        <span class="order-date">${order.date}</span>
-                        <button class="delete-btn" onclick="deleteOrder('${order.id}')"><i class="fa-solid fa-trash"></i> حذف</button>
-                    </div>
-                    <div class="info-group"><span class="info-label">الزبون:</span> ${order.name}</div>
-                    <div class="info-group"><span class="info-label">الهاتف:</span> <a href="tel:${order.phone}" style="color:var(--accent);">${order.phone}</a></div>
-                    <div class="info-group"><span class="info-label">العنوان/المحل:</span> ${order.address}</div>
-                    
-                    <div class="items-list">
-                        ${order.items.map(item => `<div>${item.name}</div>`).join('')}
-                    </div>
+  function toggleLang() {
+    currentLang = currentLang === 'ar' ? 'en' : 'ar';
+    document.getElementById('htmlTag').dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+    document.getElementById('langBtn').innerText = currentLang === 'ar' ? 'EN' : 'AR';
+    updateUI();
+  }
 
-                    ${order.reply ? `<div class="current-reply">الرد الحالي: <strong>${order.reply}</strong></div>` : ''}
+  function updateUI() {
+    const t = UI_TEXT[currentLang];
+    document.getElementById('appTitle').innerText = t.title;
+    document.getElementById('appSubtitle').innerText = t.sub;
+    document.getElementById('titleStep1').innerHTML = `<i class="fa-solid fa-mobile-screen-button"></i> ${t.step1}`;
+    document.getElementById('backText1').innerText = t.back;
+    document.getElementById('backText2').innerText = t.back;
+    document.getElementById('backTextRepair').innerText = t.back;
+    document.getElementById('backTextCompReq').innerText = t.back;
+    document.getElementById('backTextInfo').innerText = t.back;
+    document.getElementById('searchInput').placeholder = t.search;
+    document.getElementById('footerText').innerText = t.footer;
+    initGrids();
+  }
 
-                    <div class="reply-section">
-                        <div class="reply-title">إرسال رد للزبون:</div>
-                        <div class="reply-btn-group">
-                            <button class="reply-btn btn-add" onclick="sendReply('${order.id}', 'تم الإضافة', 'مكتمل')"><i class="fa-solid fa-check-circle"></i> تم الإضافة</button>
-                            <button class="reply-btn btn-none" onclick="sendReply('${order.id}', 'لا يوجد توافق', 'ملغي')"><i class="fa-solid fa-times-circle"></i> لا يوجد توافق</button>
-                            <button class="reply-btn btn-err" onclick="sendReply('${order.id}', 'حدث خطأ في الاتصال', 'خطأ')"><i class="fa-solid fa-exclamation-triangle"></i> خطأ اتصال</button>
-                            <button class="reply-btn btn-custom" onclick="toggleCustomBox('${order.id}')"><i class="fa-solid fa-pen"></i> رسالة خاصة</button>
-                        </div>
+  function initGrids() {
+    const bGrid = document.getElementById('brandsGrid');
+    bGrid.innerHTML = '';
 
-                        <div class="custom-msg-box" id="customBox_${order.id}" style="display: ${activeCustomInputId === order.id ? customBoxDisplay : 'none'};">
-                            <input type="text" id="input_${order.id}" placeholder="اكتب ردك الخاص هنا..." 
-                                   onfocus="activeCustomInputId='${order.id}'" 
-                                   value="${activeCustomInputId === order.id ? currentInputValue : ''}">
-                            <button onclick="sendCustomReply('${order.id}')">إرسال الرد الخاص</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
+    const repairItem = document.createElement('div');
+    repairItem.className = 'grid-item';
+    repairItem.style.gridColumn = 'span 2';
+    repairItem.style.background = 'linear-gradient(135deg, rgba(0,82,212,0.06) 0%, rgba(67,100,247,0.06) 100%)';
+    repairItem.style.borderColor = 'var(--primary)';
+    repairItem.onclick = () => { checkUserAndProceed('repair'); };
+    repairItem.innerHTML = `
+      <div style="display:flex; align-items:center; gap:12px; width:100%;">
+        <div style="background:var(--vibrant-gradient); color:white; width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; box-shadow:0 4px 10px rgba(0,82,212,0.25);">
+          <i class="fa-solid fa-screwdriver-wrench"></i>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-size:1.05rem; display:block; color:var(--primary); font-weight:700;">طلب صيانة جهاز</span>
+          <span style="font-size:0.8rem; color:var(--text-light); font-weight:500;">أرسل طلب صيانة لعطل هاتفك الآن</span>
+        </div>
+      </div>
+    `;
+    bGrid.appendChild(repairItem);
 
-        function toggleCustomBox(orderId) {
-            const box = document.getElementById(`customBox_${orderId}`);
-            if (box.style.display === 'block') {
-                box.style.display = 'none';
-                activeCustomInputId = null;
-            } else {
-                box.style.display = 'block';
-                activeCustomInputId = orderId;
-            }
-        }
+    const compReqItem = document.createElement('div');
+    compReqItem.className = 'grid-item';
+    compReqItem.style.gridColumn = 'span 2';
+    compReqItem.style.background = 'linear-gradient(135deg, rgba(111,177,252,0.06) 0%, rgba(0,82,212,0.06) 100%)';
+    compReqItem.style.borderColor = 'var(--secondary)';
+    compReqItem.onclick = () => { checkUserAndProceed('compatibility-request'); };
+    compReqItem.innerHTML = `
+      <div style="display:flex; align-items:center; gap:12px; width:100%;">
+        <div style="background:linear-gradient(135deg, #4364f7 0%, #6fb1fc 100%); color:white; width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; box-shadow:0 4px 10px rgba(67,100,247,0.25);">
+          <i class="fa-solid fa-puzzle-piece"></i>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-size:1.05rem; display:block; color:var(--secondary); font-weight:700;">طلب توافق قطعة</span>
+          <span style="font-size:0.8rem; color:var(--text-light); font-weight:500;">ابحث واطلب توافق قطعة غير موجودة</span>
+        </div>
+      </div>
+    `;
+    bGrid.appendChild(compReqItem);
 
-        async function sendCustomReply(orderId) {
-            const input = document.getElementById(`input_${orderId}`);
-            const msg = input.value.trim();
-            if (!msg) {
-                alert("يرجى كتابة نص الرسالة أولاً!");
-                return;
-            }
-            activeCustomInputId = null;
-            await sendReply(orderId, msg, 'مكتمل');
-        }
+    DB_BRANDS.forEach((b, i) => {
+      const item = document.createElement('div');
+      item.className = 'grid-item';
+      item.style.animationDelay = `${(i + 2) * 0.03}s`;
+      item.onclick = () => { selectedBrand = b.ar; document.getElementById('selectedBrandTitle').innerText = (currentLang==='ar'?b.ar:b.en); showStep('types'); };
+      item.innerHTML = `<img src="${b.img}" onerror="this.src='https://img.icons8.com/ios/50/000000/smartphone.png'"><span>${currentLang==='ar'?b.ar:b.en}</span>`;
+      bGrid.appendChild(item);
+    });
 
-        async function sendReply(orderId, replyText, statusText) {
-            try {
-                await fetch(ADMIN_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        action: 'sendReply',
-                        orderId: orderId,
-                        replyMessage: replyText,
-                        newStatus: statusText
-                    })
-                });
-                activeCustomInputId = null;
-                alert("تم إرسال الرد بنجاح!");
-                fetchOrders();
-            } catch (err) {
-                alert("حدث خطأ أثناء إرسال الرد");
-            }
-        }
+    const tGrid = document.getElementById('typesGrid');
+    tGrid.innerHTML = '';
+    DB_TYPES[currentLang].forEach((t, i) => {
+      const item = document.createElement('div');
+      item.className = 'grid-item';
+      item.style.animationDelay = `${i * 0.03}s`;
+      item.onclick = () => { selectedType = DB_TYPES['ar'][i]; showStep('results'); renderList(); };
+      item.innerHTML = `<span>${t}</span>`;
+      tGrid.appendChild(item);
+    });
+  }
 
-        async function deleteOrder(orderId) {
-            if (!confirm("هل أنت متأكد من حذف هذا الطلب نهائياً؟")) return;
-            try {
-                await fetch(ADMIN_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        action: 'deleteOrder',
-                        orderId: orderId
-                    })
-                });
-                fetchOrders();
-            } catch (err) {
-                alert("حدث خطأ أثناء حذف الطلب");
-            }
-        }
+  function showStep(s) {
+    document.querySelectorAll('.step-view').forEach(v => v.classList.remove('active'));
+    document.getElementById('step-' + s).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
-        fetchOrders();
-        setInterval(fetchOrders, 5000);
-    </script>
+  async function fetchData() {
+    isLoadingData = true;
+    try {
+      const res = await fetch(apiUrl);
+      allData = await res.json();
+    } catch (e) { 
+      console.error("Error fetching data", e); 
+    } finally {
+      isLoadingData = false;
+      if (document.getElementById('step-results').classList.contains('active')) {
+        renderList();
+      }
+    }
+  }
+
+  function renderList() {
+    const query = document.getElementById('searchInput').value.toLowerCase().trim();
+    const list = document.getElementById('productsList');
+    list.innerHTML = '';
+
+    if (isLoadingData) {
+      list.innerHTML = `<div style="text-align:center; padding:40px; color:var(--primary);"><i class="fa-solid fa-spinner fa-spin fa-2x" style="margin-bottom:10px;"></i><br>جاري تحميل البيانات...</div>`;
+      return;
+    }
+
+    if (!allData || allData.length <= 1) {
+      list.innerHTML = `<div style="text-align:center; padding:40px; color:#94a3b8;"><i class="fa-solid fa-triangle-exclamation fa-2x" style="margin-bottom:10px; opacity:0.3;"></i><br>${UI_TEXT[currentLang].noResult}</div>`;
+      return;
+    }
+
+    const filtered = allData.slice(1).filter(row => {
+      if (!row || row.length < 4) return false;
+      const bMatch = row[3] ? row[3].toString().trim() === selectedBrand : false;
+      const tMatch = row[2] ? row[2].toString().trim() === selectedType : false;
+      if (!bMatch || !tMatch) return false;
+      if (query === "") return true;
+      const model = row[0] ? row[0].toString().toLowerCase() : "";
+      const comp = row[1] ? row[1].toString().toLowerCase() : "";
+      return model.includes(query) || query.includes(model) || comp.includes(query);
+    });
+
+    if (filtered.length === 0) {
+      list.innerHTML = `<div style="text-align:center; padding:40px; color:#94a3b8;"><i class="fa-solid fa-magnifying-glass fa-2x" style="margin-bottom:10px; opacity:0.3;"></i><br>${UI_TEXT[currentLang].noResult}</div>`;
+      return;
+    }
+
+    filtered.forEach((row, i) => {
+      const model = row[0] ? row[0].toString().toLowerCase() : "";
+      const div = document.createElement('div');
+      div.className = 'item';
+      div.style.animationDelay = `${i * 0.02}s`;
+      if (query !== "" && (model.includes(query) || query.includes(model))) div.classList.add('matched');
+      div.innerHTML = `<span class="name">${row[0] || ''}</span><span class="compatibility">${row[1] || ''}</span>`;
+      list.appendChild(div);
+    });
+  }
+</script>
 </body>
 </html>
